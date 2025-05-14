@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creador de Informes</title>
+
+    <!-- Enlace al Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Favicon y Apple Touch Icon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="icons/android-icon-192x192.png"> <!-- Usa tu icono más grande o uno específico para Apple -->
+
+    <!-- Theme Color para la barra de direcciones del navegador -->
+    <meta name="theme-color" content="#4A90E2"> <!-- Puedes cambiar este color -->
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* Evita barras de scroll innecesarias en el cuerpo */
+            background-color: #f0f0f0; /* Color de fondo mientras carga el iframe */
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none; /* Sin borde para el iframe */
+            display: block; /* Asegura que el iframe ocupe todo el espacio */
+        }
+        /* Opcional: Un simple loader mientras carga el iframe */
+        .loader {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-family: sans-serif;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Opcional: Loader -->
+    <div id="loader" class="loader">Cargando aplicación...</div>
+
+    <iframe id="appFrame" src="https://script.google.com/macros/s/AKfycbxix3VlsulizM_Q8EynTW9gt71c1UEQhadEcvkBkh-6j7vu2DqxRNoJNOZjJ1OBxke0/exec"></iframe>
+
+    <script>
+        // Registrar el Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registrado con éxito:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Fallo en el registro del ServiceWorker:', error);
+                    });
+            });
+        }
+
+        // Opcional: Ocultar el loader cuando el iframe haya cargado
+        const iframe = document.getElementById('appFrame');
+        const loader = document.getElementById('loader');
+        if (iframe && loader) {
+            iframe.addEventListener('load', () => {
+                loader.style.display = 'none';
+            });
+        }
+    </script>
+</body>
+</html>
